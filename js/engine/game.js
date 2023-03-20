@@ -19,8 +19,13 @@ class Game {
         //canvasの縦幅（ゲームの縦幅）を設定。もし縦幅が指定されていなければ320を代入
         this.canvas.height = height || 320;
 
-        //ゲームに登場する全てのもの（オブジェクト）を入れるための配列
-        this.objs = [];
+        //ゲームに登場する全てのもの（オブジェクト）を入れるための配列（削除）
+		//this.objs = [];（削除）
+
+		//シーンを入れておくための配列
+		this.scenes = [];
+		//現在のシーンをいれておくためのもの
+		this.currentScene;
 
         //ゲームに使用するキーと、そのキーが押されているかどうかを入れるための連想配列
         //例 { up: false, down: false }
@@ -39,6 +44,9 @@ class Game {
         this.keybind('down', 'ArrowDown');
         this.keybind('right', 'ArrowRight');
         this.keybind('left', 'ArrowLeft');
+
+        //現在のシーン（currentScene）になにも入っていないときは、scenes[0]を代入
+		this.currentScene = this.currentScene || this.scenes[0];
 
         //メインループを呼び出す
         this._mainLoop();
@@ -87,26 +95,28 @@ class Game {
         //左上から、画面のサイズまでを、塗りつぶす
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        //ゲームに登場する全てのもの（オブジェクト）の数だけ繰り返す
-        for (let i = 0; i < this.objs.length; i++) {
-            //スプライトやテキストなど、すべてのオブジェクトのupdateメソッドを呼び出す
-            this.objs[i].update(this.canvas);
-        }
+        //現在のシーンの、ゲームに登場する全てのもの（オブジェクト）の数だけ繰り返す
+		for ( let i=0; i<this.currentScene.objs.length; i++ ) {
+			//現在のシーンの、すべてのオブジェクトのupdateメソッドを呼び出す
+			this.currentScene.objs[i].update( this.canvas );
+		}
 
         //自分自身（_mainLoop）を呼び出して、ループさせる
         requestAnimationFrame(this._mainLoop.bind(this));
     } //_mainLoop() 終了
 
     /**
-     * オブジェクトをゲームに追加できるようになる、addメソッドを作成
-     *
-     * 引数
-     * obj : 追加したいオブジェクト
-     */
-    add(obj) {
-        //this.objs配列の末尾に、objの値を追加
-        this.objs.push(obj);
-    } //add() 終了
+	 * ゲームにシーンに追加できるようになる、addメソッドを作成
+	 *
+	 * 引数
+	 * scene : 追加したいシーン
+	 */
+	add( scene ) {
+		//引数がSceneのとき、this.scenesの末尾にsceneを追加
+		if ( scene instanceof Scene ) this.scenes.push( scene );
+		//引数がSceneでなければ、コンソールにエラーを表示
+		else console.error( 'Gameに追加できるのはSceneだけだよ！' );
+	} //add()終了
 
     /**
 	 * 使いたいキーを登録できるようになる、keybindメソッドを作成
