@@ -95,6 +95,9 @@ class Game {
         //左上から、画面のサイズまでを、塗りつぶす
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+        //現在のシーンのupdateメソッドを呼び出す
+		this.currentScene.update();
+
         //現在のシーンの、ゲームに登場する全てのもの（オブジェクト）の数だけ繰り返す
 		for ( let i=0; i<this.currentScene.objs.length; i++ ) {
 			//現在のシーンの、すべてのオブジェクトのupdateメソッドを呼び出す
