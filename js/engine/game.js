@@ -42,7 +42,39 @@ class Game {
 
         //メインループを呼び出す
         this._mainLoop();
+
+        //イベントリスナーをセットする
+		this._setEventListener();
     } //start() 終了
+
+    /**
+	 * イベントリスナーをセットするためのメソッド
+	 */
+	_setEventListener() {
+		//なにかキーが押されたときと、はなされたときに呼ばれる
+		const _keyEvent = e => {
+			//デフォルトのイベントを発生させない
+			e.preventDefault();
+			//_keysに登録された数だけ繰り返す
+			for ( let key in this._keys ) {
+				//イベントのタイプによって呼び出すメソッドを変える
+				switch ( e.type ) {
+					case 'keydown' :
+						//押されたキーが、登録されたキーの中に存在するとき、inputのそのキーをtrueにする
+						if ( e.key === this._keys[key] ) this.input[key] = true;
+						break;
+					case 'keyup' :
+						//押されたキーが、登録されたキーの中に存在するとき、inputのそのキーをfalseにする
+						if ( e.key === this._keys[key] ) this.input[key] = false;
+						break;
+				}
+			}
+		}
+		//なにかキーが押されたとき
+		addEventListener( 'keydown', _keyEvent, { passive: false } );
+		//キーがはなされたとき
+		addEventListener( 'keyup', _keyEvent, { passive: false } );
+	} //_setEventListener() 終了
 
     /**
      * メインループ
@@ -76,4 +108,17 @@ class Game {
         this.objs.push(obj);
     } //add() 終了
 
+    /**
+	 * 使いたいキーを登録できるようになる、keybindメソッドを作成
+	 *
+	 * 引数
+	 * name : キーにつける名前
+	 * key : キーコード
+	 */
+	keybind( name, key ) {
+		//キーの名前と、キーコードを関連づける
+		this._keys[name] = key;
+		//キーが押されているかどうかを入れておく変数に、まずはfalseを代入しておく
+		this.input[name] = false;
+	} //keybind() 終了
 }
