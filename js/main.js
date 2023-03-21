@@ -19,7 +19,7 @@ addEventListener( 'load', () => {
 			const scene = new Scene();
 
 			//変数titleTextに、あなたは「くろねこラビリンス」というテキストだよ、と教える
-			const titleText = new Text( 'くろねこラビリンス' );
+			const titleText = new Text( 'くろねこラビリンスaa' );
 			//テキストを上下左右中央の位置にする
 			titleText.center().middle();
 			//シーンにテキストを追加
