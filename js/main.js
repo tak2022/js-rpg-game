@@ -84,8 +84,8 @@ addEventListener( 'load', () => {
 			//変数goalに、あなたはゴールのタイルですよ、と教える
 			const goal = new Tile( 'img/goal.png' );
 			//マップ左上からの座標を指定する
-			goal.x = TILE_SIZE*98;
-			goal.y = TILE_SIZE*98;
+			goal.x = TILE_SIZE;
+			goal.y = TILE_SIZE*3;
 			//ゴールのタイルを、tilemapに追加して、とお願いする
 			tilemap.add( goal );
 
